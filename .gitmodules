@@ -1,0 +1,9 @@
+[submodule "colormaps"]
+	path = colormaps
+	url = ../colormaps
+[submodule "explor"]
+	path = explor
+	url = ../explor
+[submodule "brick"]
+	path = brick
+	url = ../brick
