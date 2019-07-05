@@ -412,14 +412,21 @@ for kloop = 1:nloop
         alphai1 = alphai1 / sum(alphai1); % avoid divergences on the norm of the estimated sig_region
         sig_region = (sig - sig_neuropil*beta(idxi)')*alphai1';
         S = [sig_region sig_neuropil];
-        ab = S\sig;
-        % no negative contribution of neuropil authorized
-        negnpil = ab(2,:)<0;
-        ab(2,negnpil) = 0;
-        S = sig_region;
-        ab(1,negnpil) = S\sig(:,negnpil);
-        alpha(idxi) = ab(1,:);
-        beta(idxi) = ab(2,:);
+        if rank(S) == 1
+            S = sig_region;
+            a = S\sig;
+            alpha(idxi) = a;
+            beta(idxi) = 0;
+        else            
+            ab = S\sig;
+            % no negative contribution of neuropil authorized
+            negnpil = ab(2,:)<0;
+            ab(2,negnpil) = 0;
+            S = sig_region;
+            ab(1,negnpil) = S\sig(:,negnpil);
+            alpha(idxi) = ab(1,:);
+            beta(idxi) = ab(2,:);
+        end
     end
     %     % display
     %     alpha_im.SI.data = alpha;
